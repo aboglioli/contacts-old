@@ -95,14 +95,14 @@ app.post('/:id', (req, res) => {
     .then(data => {
       console.log('NUEVO CONTACTO:', contact);
 
-      contactTemplate.render({name: dbData.name, contact}, (err, result) => {
+      contactTemplate.render({name: data.name, contact}, (err, result) => {
         if(err) {
           return res.send('ERROR');
         }
 
         const mailData = {
           from: 'Contacto <contacto@ideenegocios.com.ar>',
-          to: dbData.email,
+          to: data.email,
           subject: `Nuevo contacto en ${data.name}`,
           html: result.html
         };
