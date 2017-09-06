@@ -49,7 +49,7 @@ app.post('/configure/:passwd', (req, res) => {
   }
 
   const data = req.body;
-  if(!data.id || !data.name || !data.url) {
+  if(!data.id || !data.name || !data.url || !data.email) {
     return res.send('Missing data');
   }
 
@@ -102,7 +102,7 @@ app.post('/:id', (req, res) => {
 
         const mailData = {
           from: 'Contacto <contacto@ideenegocios.com.ar>',
-          to: 'alan.boglioli@gmail.com',
+          to: dbData.email,
           subject: `Nuevo contacto en ${data.name}`,
           html: result.html
         };
