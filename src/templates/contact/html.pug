@@ -1,0 +1,8 @@
+.wrapper
+  h1#title= name
+  h2#subtitle Nuevo contacto
+  .data
+    each val, index in contact
+      .data-item
+        p.name= index
+        p.value= val

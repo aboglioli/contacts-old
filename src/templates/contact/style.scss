@@ -1,0 +1,35 @@
+html, body {
+  background-color: #f0f0f0;
+}
+
+.wrapper {
+  width: 100%;
+  border-radius: 3px;
+  background-color: #fff;
+  border: 1px solid #e2e2e2;
+  padding: 1rem;
+  margin-top: 0.5rem;
+
+  h1#title {
+    font-size: 1.3rem;
+  }
+
+  h2#subtitle {
+    font-size: 1rem;
+    color: #555;
+  }
+
+  .data {
+    .data-item {
+      p {
+        margin: 0 0 0.5rem 0;
+        display: inline-block;
+
+        &.name {
+          margin-right: 0.5rem;
+          font-weight: bold;
+        }
+      }
+    }
+  }
+}
