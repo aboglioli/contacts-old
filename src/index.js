@@ -97,7 +97,7 @@ app.post('/:id', (req, res) => {
 
       contactTemplate.render({name: data.name, contact}, (err, result) => {
         if(err) {
-          return res.send('ERROR');
+          return res.send('ERROR (rendering email template)');
         }
 
         const mailData = {
@@ -109,7 +109,7 @@ app.post('/:id', (req, res) => {
 
         mailgun.messages().send(mailData, (err, body) => {
           if(err) {
-            return res.send('ERROR');
+            return res.send('ERROR (sending email)');
           }
 
           res.send('OK');
