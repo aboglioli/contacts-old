@@ -19,7 +19,7 @@ const {renderTemplate} = require('../src/template-renderer');
 describe('Server' ,function() {
   // this.timeout(10000);
 
-  before((done) => {
+  it('POST /configure', (done) => {
     chai.request(server)
       .post('/configure/123456')
       .send({
@@ -50,7 +50,8 @@ describe('Server' ,function() {
         item3: {
           subtotal: 333
         }
-      }
+      },
+      arr: ['Arr 1', 'Arr 2']
     };
 
     const formattedContact = formatContact(contact);
@@ -65,7 +66,8 @@ describe('Server' ,function() {
         Item3: {
           Subtotal: 333
         }
-      }
+      },
+      Arr: 'Arr 1, Arr 2'
     });
   });
 
@@ -80,7 +82,8 @@ describe('Server' ,function() {
         item3: {
           subtotal: 333
         }
-      }
+      },
+      arr: ['Arr 1', 'Arr 2']
     };
 
     const formattedContact = formatContact(contact);
@@ -91,6 +94,8 @@ describe('Server' ,function() {
       expect(result.html.includes('email@email.com')).to.be.true;
       expect(result.html.includes('Item1')).to.be.true;
       expect(result.html.includes('Subtotal')).to.be.true;
+      expect(result.html.includes('Arr')).to.be.true;
+      expect(result.html.includes('Arr 1, Arr 2')).to.be.true;
 
       done();
     });

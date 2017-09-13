@@ -4,9 +4,13 @@ function capitalizeFirstLetter (str) {
 
 exports.formatContact = (contact) => {
   return Object.keys(contact).reduce((obj, key) => {
-    if(typeof contact[key] === 'object') {
+    if(Array.isArray(contact[key])) {
+      obj[capitalizeFirstLetter(key)] = contact[key].join(', ');
+    }
+    else if(typeof contact[key] === 'object') {
       obj[capitalizeFirstLetter(key)] = this.formatContact(contact[key]);
-    } else {
+    }
+    else {
       obj[capitalizeFirstLetter(key)] = contact[key];
     }
 
