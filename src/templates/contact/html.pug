@@ -1,8 +1,16 @@
+mixin renderItem(obj)
+  each val, key in obj
+    if typeof(val) === 'object'
+      .data-item
+        p.name= key
+        +renderItem(val)
+    else
+      .data-item
+        p.name= key
+        p.value= val
+
 .wrapper
   h1#title= name
   h2#subtitle Nuevo contacto
   .data
-    each val, index in contact
-      .data-item
-        p.name= index
-        p.value= val
+    +renderItem(contact)

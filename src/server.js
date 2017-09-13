@@ -1,9 +1,3 @@
-// environment
-require('dotenv').config();
-
-// native
-const path = require('path');
-
 // express
 const express = require('express');
 const app = express();
@@ -20,20 +14,12 @@ const FileAsync = require('lowdb/adapters/FileAsync');
 const adapter = new FileAsync('db.json');
 let db;
 
-// mailgun
-const mailgun = require('mailgun-js')({
-  apiKey: process.env.MAILGUN_API_KEY,
-  domain: process.env.MAILGUN_DOMAIN
-});
-
-// email templates
-const templateDir = path.join(__dirname, 'templates', 'contact');
-
-const EmailTemplate = require('email-templates').EmailTemplate;
-const contactTemplate = new EmailTemplate(templateDir);
-
 // date
 const moment = require('moment');
+
+// utils
+const {renderTemplate} = require('./template-renderer');
+const {formatContact} = require('./utils');
 
 // set routes
 app.get('/:passwd', (req, res) => {
@@ -94,30 +80,16 @@ app.post('/:id', (req, res) => {
     .find({id})
     .assign({contacts: [...dbData.contacts, contact]})
     .write()
-    .then(data => {
-      console.log('NUEVO CONTACTO:', contact);
-
-      contactTemplate.render({name: data.name, contact}, (err, result) => {
+    .then((data) => {
+      renderTemplate(data.name, data.email, contact, (err, message) => {
         if(err) {
-          return res.send('ERROR (rendering email template)');
+          return res.send(message);
         }
 
-        const mailData = {
-          from: 'Contacto <contacto@ideenegocios.com.ar>',
-          to: data.email,
-          subject: `Nuevo contacto en ${data.name}`,
-          html: result.html
-        };
-
-        mailgun.messages().send(mailData, (err, body) => {
-          if(err) {
-            return res.send('ERROR (sending email)');
-          }
-
-          res.send('OK');
-        });
+        return res.send(message);
       });
-    });
+    })
+    .catch((err) => res.send(err));
 });
 
 // create database instance and start server
@@ -127,18 +99,7 @@ low(adapter)
     return db.defaults({root: []}).write();
   })
   .then(() => {
-    app.listen(process.env.APP_PORT, () => console.log(`Listening on port ${process.env.APP_PORT}`));
+    app.listen(process.env.APP_PORT, () => console.log(`Listening on port ${process.env.APP_PORT} (${process.env.NODE_ENV})`));
   });
 
-
-// utils
-function capitalizeFirstLetter(str) {
-  return str.charAt(0).toUpperCase() + str.slice(1);
-}
-
-function formatContact(contact) {
-  return Object.keys(contact).reduce((obj, key) => {
-    obj[capitalizeFirstLetter(key)] = contact[key];
-    return obj;
-  }, {});
-}
+module.exports = app;

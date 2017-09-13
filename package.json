@@ -2,9 +2,11 @@
   "name": "contacts",
   "version": "1.0.0",
   "description": "",
-  "main": "src/index.js",
+  "main": "index.js",
   "scripts": {
-    "start": "nodemon --ignore db.json src/index.js"
+    "start": "nodemon --ignore db.json index.js",
+    "test": "mocha --recursive tests",
+    "test-watch": "nodemon --ignore db.json --exec \"mocha -R min\" tests"
   },
   "author": "Alan Boglioli <alan.boglioli@gmail.com>",
   "license": "MIT",
@@ -21,6 +23,9 @@
     "pug": "^2.0.0-rc.4"
   },
   "devDependencies": {
+    "chai": "^4.1.2",
+    "chai-http": "^3.0.0",
+    "mocha": "^3.5.3",
     "nodemon": "^1.12.0"
   }
 }
