@@ -1,12 +1,17 @@
 // express
+const http = require('http');
 const express = require('express');
-const app = express();
 const cors = require('cors');
 const bodyParser = require('body-parser');
 
+const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+// https
+const fs = require('fs');
+const https = require('https');
 
 // lowdb
 const low = require('lowdb');
@@ -99,7 +104,15 @@ low(adapter)
     return db.defaults({root: []}).write();
   })
   .then(() => {
-    app.listen(process.env.APP_PORT, () => console.log(`Listening on port ${process.env.APP_PORT} (${process.env.NODE_ENV})`));
+    // http
+    http.createServer(app)
+      .listen(process.env.APP_HTTP_PORT, () => console.log(`[HTTP] Listening on port ${process.env.APP_HTTP_PORT} (${process.env.NODE_ENV})`));
+
+    // https
+    https.createServer({
+      key: fs.readFileSync('my-cert.key'),
+      cert: fs.readFileSync('my-cert.crt')
+    }, app).listen(process.env.APP_HTTPS_PORT, () => console.log(`[HTTPS] Listening on port ${process.env.APP_HTTPS_PORT} (${process.env.NODE_ENV})`));
   });
 
 module.exports = app;
