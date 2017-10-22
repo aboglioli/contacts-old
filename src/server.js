@@ -110,8 +110,8 @@ low(adapter)
 
     // https
     https.createServer({
-      key: fs.readFileSync('my-cert.key'),
-      cert: fs.readFileSync('my-cert.crt')
+      key: fs.readFileSync(process.env.SSL_PATH + 'privkey.pem'),
+      cert: fs.readFileSync(process.env.SSL_PATH + 'fullchain.pem')
     }, app).listen(process.env.APP_HTTPS_PORT, () => console.log(`[HTTPS] Listening on port ${process.env.APP_HTTPS_PORT} (${process.env.NODE_ENV})`));
   });
 
