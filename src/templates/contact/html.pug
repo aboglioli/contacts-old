@@ -1,6 +1,16 @@
+mixin renderArray(arr)
+  each val, key in arr
+    .data-item
+      p.array-item -
+      +renderItem(val)
+
 mixin renderItem(obj)
   each val, key in obj
-    if typeof(val) === 'object'
+    if val.constructor == Array
+      .data-item
+        p.name= key
+        +renderArray(val)
+    else if typeof(val) === 'object'
       .data-item
         p.name= key
         +renderItem(val)
