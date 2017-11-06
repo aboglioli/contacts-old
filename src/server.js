@@ -26,7 +26,14 @@ const moment = require('moment');
 const {renderTemplate} = require('./template-renderer');
 const {formatContact} = require('./utils');
 
+// package
+const package = require('../package.json');
+
 // set routes
+app.get('/', (req, res) => {
+  return res.send(package.version);
+});
+
 app.get('/:passwd', (req, res) => {
   if(req.params.passwd !== process.env.APP_PASSWORD) {
     return res.send('Invalid password');
