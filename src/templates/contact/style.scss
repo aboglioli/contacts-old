@@ -22,6 +22,7 @@ html, body {
   .data {
     .data-item {
       padding-left: 1rem;
+      position: relative;
 
       p {
         margin: 0 0 0.5rem 0;
@@ -30,6 +31,11 @@ html, body {
         &.name {
           margin-right: 0.5rem;
           font-weight: bold;
+        }
+
+        &.array-item {
+          float: left;
+          font-weight: normal;
         }
       }
     }
